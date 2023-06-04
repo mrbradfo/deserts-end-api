@@ -1,16 +1,20 @@
 import Koa from "koa";
-import Router from "koa-router";
-import knex from "knex";
-import config from "./config/devolunteersDB";
+import koaBody from "koa-body";
+import cors from "@koa/cors";
+import * as env from "./utilities/environmentVariables";
+import router from "./routes";
 
 const app = new Koa();
-const router = new Router();
-const port = 3000;
+const port = env.getAsNumber("PORT");
 
+app.use(koaBody());
+app.use(cors());
 app.use(router.routes());
 app.use(router.allowedMethods());
-
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+  console.log(
+    "routes",
+    router.stack.map((i) => i.path)
+  );
 });
