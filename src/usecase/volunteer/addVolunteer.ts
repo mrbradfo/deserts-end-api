@@ -1,7 +1,7 @@
-import { Middleware } from "koa";
+import { Middleware, ParameterizedContext } from "koa";
 import knex from "knex";
-import { Assert, User, Volunteer } from "../types";
-import config from "../config/devolunteersDB";
+import { Assert, Volunteer } from "../../types";
+import config from "../../config/devolunteersDB";
 
 const addVolunteer: Middleware = async (ctx) => {
   const assert: Assert = ctx.assert as Assert;
@@ -11,14 +11,14 @@ const addVolunteer: Middleware = async (ctx) => {
   const volunteer = ctx.request.body as Volunteer;
   assert(volunteer.user_id, 400, "User Id not be empty");
   assert(volunteer.role_id, 400, "Role Id must not be empty");
-  console.log("body", ctx.request.body);
 
-  // cast request body to User type
   try {
     const db = knex(config);
-    await db("volunteers").insert(volunteer);
-    console.log("Volunteer inserted successfully");
+    const insertedVolunteer = await db("volunteers").insert(volunteer);
+    [volunteer.id] = insertedVolunteer;
+    console.log("Volunteer inserted successfully", insertedVolunteer);
     ctx.status = 201;
+    ctx.body = volunteer;
   } catch (error: any) {
     console.error("Error inserting volunteer:", error);
     ctx.body = error;

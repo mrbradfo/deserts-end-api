@@ -1,37 +1,54 @@
 import Router from "koa-router";
 import knex from "knex";
 import authorize from "./middleware/authorize";
-import getAllVolunteers from "./usecase/getAllVolunteers";
-import getVolunteerById from "./usecase/getVolunteerById";
-import addVolunteer from "./usecase/addVolunteer";
 import config from "./config/devolunteersDB";
-import addUser from "./usecase/addUser";
+import addUser from "./usecase/user/addUser";
+import getAllUsers from "./usecase/user/getAllUsers";
+import getUserById from "./usecase/user/getUserById";
+import deleteById from "./usecase/deleteById";
+import addNewRole from "./usecase/role/addNewRole";
+import getAll from "./usecase/getAll";
+import getById from "./usecase/getById";
+import addUserToRole from "./usecase/role/addUserToRole";
+import removeUserFromRole from "./usecase/role/removeUserFromRole";
+import updateUser from "./usecase/user/updateUser";
+import updateById from "./usecase/updateById";
+import { Role, User } from "./types";
+import { ROLES, USERS } from "./constants/TableNames";
 
 const router = new Router();
 
 // user
-router.post("/users", authorize(), addUser); // add a user
-// router.post("/users/login", loginUser); // login user
-// router.get("/users", authorize(), getAllUsers); // get all users
-// router.get("/users/:id", authorize(), getUserById); // get user by id
-// router.put("/users/:id", authorize(), updateUser); // update user by id
-// router.delete("/users/:id", authorize(), deleteUser); // delete user by id
+router.post("/users", authorize(), addUser);
+// router.post("/users/login", loginUser);
+router.get("/users", authorize(), getAllUsers);
+router.get("/users/:id", authorize(), getUserById);
+router.put("/users/:id", authorize(), async (ctx) => {
+  return updateById<User>(ctx, USERS);
+});
+router.delete("/users/:id", authorize(), async (ctx) => {
+  return deleteById(ctx, USERS);
+});
 
-// volunteer
-router.get("/volunteer/:id", authorize(), getVolunteerById); // get volunteer by id
-router.get("/volunteers", authorize(), getAllVolunteers); // get all volunteers
-router.post("/volunteers", authorize(), addVolunteer); // add a volunteer
-// router.put("/volunteers/:id", authorize(), updateVolunteer); // update volunteer by id
-// router.delete("/volunteers/:id", authorize(), deleteVolunteer); // delete volunteer by id
+// role
+router.get("/roles", authorize(), async (ctx) => {
+  return getAll(ctx, ROLES);
+});
+router.get("/roles/:id", authorize(), async (ctx) => {
+  return getById(ctx, ROLES);
+});
+router.post("/roles", authorize(), addNewRole);
+router.put("/roles/:id/add", authorize(), addUserToRole);
+router.put("/roles/:id", authorize(), async (ctx) => {
+  return updateById<Role>(ctx, ROLES);
+});
 
-// schedule
-// router.get("/schedules", authorize(), getAllSchedules); // get all schedules
-// router.get("/schedules/:id", authorize(), getScheduleById); // get schedule by user id
-// router.post("/schedules", authorize(), addSchedule); // add a schedule
-// router.put("/schedules/:id", authorize(), updateSchedule); // update schedule by id
-// router.delete("/schedules/:id", authorize(), deleteSchedule); // delete schedule by id
+router.put("/roles/:id/remove", authorize(), removeUserFromRole);
+router.delete("/roles/:id", authorize(), async (ctx) => {
+  return deleteById(ctx, ROLES);
+});
+router.delete("/roles/user/:id/", authorize(), removeUserFromRole);
 
-// health
 router.get("/health", async (ctx) => {
   // create health object
   const health = {
@@ -50,19 +67,6 @@ router.get("/health", async (ctx) => {
     pid: process.pid,
     uptime: `${Math.round(process.uptime() * 100) / 100} s`,
   };
-
-  // check database connection
-  await knex(config)
-    .raw("select 1+1 as result")
-    .then(() => {
-      health.dbConnection = "OK";
-    })
-    .catch((err) => {
-      health.dbConnection = err;
-    })
-    .finally(() => {
-      ctx.body = health;
-    });
 });
 
 export default router;

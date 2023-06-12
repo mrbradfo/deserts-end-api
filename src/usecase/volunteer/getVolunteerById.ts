@@ -1,7 +1,7 @@
 import { Middleware } from "koa";
 import knex from "knex";
-import { Assert } from "../types";
-import config from "../config/devolunteersDB";
+import { Assert } from "../../types";
+import config from "../../config/devolunteersDB";
 
 const getVolunteerById: Middleware = async (ctx) => {
   const assert: Assert = ctx.assert as Assert;
