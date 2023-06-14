@@ -52,7 +52,7 @@ router.delete("/roles/user/:id/", authorize(), removeUserFromRole);
 router.get("/health", async (ctx) => {
   // create health object
   const health = {
-    dbConnection: "",
+    dbConnection: await knex(config).raw("select 1+1 as result"),
     dbClient: config.client,
     node: process.version,
     memoryUsage: {
@@ -67,6 +67,7 @@ router.get("/health", async (ctx) => {
     pid: process.pid,
     uptime: `${Math.round(process.uptime() * 100) / 100} s`,
   };
+  ctx.body = health;
 });
 
 export default router;
