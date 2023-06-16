@@ -1,10 +1,9 @@
 import { Middleware, ParameterizedContext } from "koa";
 import knex from "knex";
-import config from "../config/devolunteersDB";
+import db from "../config/devolunteersDB";
 
 const getAll = async (ctx: ParameterizedContext, table: string) => {
   try {
-    const db = knex(config);
     const users = await db(table);
     console.log(`${table} retrieved successfully`);
     ctx.body = users;

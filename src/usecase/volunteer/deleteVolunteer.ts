@@ -1,7 +1,7 @@
 import { Middleware } from "koa";
 import knex from "knex";
 import { Assert } from "../../types";
-import config from "../../config/devolunteersDB";
+import db from "../../config/devolunteersDB";
 
 const deleteVolunteer: Middleware = async (ctx) => {
   const assert: Assert = ctx.assert as Assert;
@@ -9,7 +9,6 @@ const deleteVolunteer: Middleware = async (ctx) => {
   assert(id, 400, "ID is required.");
 
   try {
-    const db = knex(config);
     const volunteer = await db("volunteers").where({ id }).first();
     assert(volunteer, 404, "Volunteer not found.");
     await db("volunteers").where({ id }).del();

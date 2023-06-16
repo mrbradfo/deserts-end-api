@@ -1,14 +1,13 @@
 import knex from "knex";
 import { ParameterizedContext } from "koa";
-import config from "../config/devolunteersDB";
 import { Assert } from "../types";
+import db from "../config/devolunteersDB";
 
 // generic function to delete by id
 const deleteById = async (ctx: ParameterizedContext, tableName: string) => {
   const assert: Assert = ctx.assert as Assert;
 
   try {
-    const db = knex(config);
     const { id } = ctx.params;
     assert(id, 400, "ID is required.");
     const result = await db(tableName).where({ id }).del();

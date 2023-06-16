@@ -1,7 +1,7 @@
 import { ParameterizedContext } from "koa";
 import knex from "knex";
 import { Assert } from "../types";
-import config from "../config/devolunteersDB";
+import db from "../config/devolunteersDB";
 
 const updateById = async <T>(ctx: ParameterizedContext, table: string) => {
   const assert: Assert = ctx.assert as Assert;
@@ -11,7 +11,6 @@ const updateById = async <T>(ctx: ParameterizedContext, table: string) => {
   assert(id, 400, "ID is required.");
 
   try {
-    const db = knex(config);
     const updatedUser = await db(table).where({ id }).update(entity);
     if (!updatedUser) {
       ctx.body = `Error updating ${table}.`;

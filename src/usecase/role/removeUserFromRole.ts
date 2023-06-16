@@ -2,6 +2,7 @@ import { Middleware } from "koa";
 import knex from "knex";
 import { Assert } from "../../types";
 import config from "../../config/devolunteersDB";
+import db from "../../config/devolunteersDB";
 
 /**
  *
@@ -15,7 +16,6 @@ const removeUserFromRole: Middleware = async (ctx) => {
   const { id } = ctx.params;
 
   try {
-    const db = knex(config);
     const updatedRole = await db("roles").where({ id }).update({ user_id: null });
 
     if (!updatedRole) {

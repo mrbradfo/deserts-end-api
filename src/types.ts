@@ -27,6 +27,6 @@ export type Role = {
   user_id: number;
   position: string;
   date: string;
-  time: string;
   description: string;
+  confirmed: boolean;
 };

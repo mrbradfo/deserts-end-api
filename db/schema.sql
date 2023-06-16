@@ -38,11 +38,32 @@ CREATE TABLE
         confirmed BOOLEAN NOT NULL DEFAULT FALSE
     );
 
-CREATE TABLE
-    positions (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        position VARCHAR(100) NOT NULL UNIQUE
-    );
+-- drop view 
+DROP VIEW volunteers;
+
+CREATE VIEW volunteers AS
+SELECT
+JSON_OBJECT(
+        'id', users.id,
+        'first_name', users.first_name,
+        'last_name', users.last_name
+    ) AS user,
+    JSON_ARRAYAGG(JSON_OBJECT(
+        'id', roles.id,
+        'position', roles.position,
+        'date', roles.date,
+        'confirmed', roles.confirmed
+    )) AS roles
+FROM
+    roles
+LEFT JOIN
+    users
+ON
+    users.id = roles.user_id
+GROUP BY
+    users.id;
+
+
 
 INSERT INTO
     positions (position)

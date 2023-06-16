@@ -1,7 +1,7 @@
 import { Middleware } from "koa";
 import knex from "knex";
 import { Assert, Role } from "../../types";
-import config from "../../config/devolunteersDB";
+import db from "../../config/devolunteersDB";
 
 const addNewRole: Middleware = async (ctx) => {
   const assert: Assert = ctx.assert as Assert;
@@ -15,7 +15,6 @@ const addNewRole: Middleware = async (ctx) => {
   console.log("addNewRole body", ctx.request.body);
 
   try {
-    const db = knex(config);
     const insertedRole = await db("roles").insert(role);
     [role.id] = insertedRole;
     ctx.body = role;

@@ -1,7 +1,6 @@
 import { Middleware, ParameterizedContext } from "koa";
 import knex from "knex";
 import { Assert, User, Volunteer } from "../../types";
-import config from "../../config/devolunteersDB";
 import deleteById from "../deleteById";
 
 const deleteRole: Middleware = async (ctx) => {
@@ -9,7 +8,6 @@ const deleteRole: Middleware = async (ctx) => {
   //   const { id } = ctx.params;
   //   assert(id, 400, "ID is required.");
   //   try {
-  //     const db = knex(config);
   //     const role = await db("roles").where({ id }).first();
   //     assert(role, 404, "Role not found.");
   //     await db("roles").where({ id }).del();

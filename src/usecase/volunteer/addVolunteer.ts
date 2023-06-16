@@ -2,6 +2,7 @@ import { Middleware, ParameterizedContext } from "koa";
 import knex from "knex";
 import { Assert, Volunteer } from "../../types";
 import config from "../../config/devolunteersDB";
+import db from "../../config/devolunteersDB";
 
 const addVolunteer: Middleware = async (ctx) => {
   const assert: Assert = ctx.assert as Assert;
@@ -13,7 +14,6 @@ const addVolunteer: Middleware = async (ctx) => {
   assert(volunteer.role_id, 400, "Role Id must not be empty");
 
   try {
-    const db = knex(config);
     const insertedVolunteer = await db("volunteers").insert(volunteer);
     [volunteer.id] = insertedVolunteer;
     console.log("Volunteer inserted successfully", insertedVolunteer);

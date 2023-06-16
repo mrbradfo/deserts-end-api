@@ -1,7 +1,7 @@
 import { Middleware, ParameterizedContext } from "koa";
 import knex from "knex";
-import config from "../config/devolunteersDB";
 import { Assert } from "../types";
+import db from "../config/devolunteersDB";
 
 const getById = async (ctx: ParameterizedContext, table: string) => {
   const assert: Assert = ctx.assert as Assert;
@@ -10,7 +10,6 @@ const getById = async (ctx: ParameterizedContext, table: string) => {
   assert(id, 400, "ID is required.");
 
   try {
-    const db = knex(config);
     const result = await db(table).where({ id }).first();
     console.log("result", result);
 

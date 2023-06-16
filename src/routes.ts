@@ -14,7 +14,9 @@ import removeUserFromRole from "./usecase/role/removeUserFromRole";
 import updateUser from "./usecase/user/updateUser";
 import updateById from "./usecase/updateById";
 import { Role, User } from "./types";
-import { ROLES, USERS } from "./constants/TableNames";
+import { ROLES, USERS, VOLUNTEERS } from "./constants/TableNames";
+import getAllVolunteers from "./usecase/volunteer/getAllVolunteers";
+import db from "./config/devolunteersDB";
 
 const router = new Router();
 
@@ -49,11 +51,14 @@ router.delete("/roles/:id", authorize(), async (ctx) => {
 });
 router.delete("/roles/user/:id/", authorize(), removeUserFromRole);
 
+router.get("/volunteers", authorize(), async (ctx) => {
+  return getAll(ctx, VOLUNTEERS);
+});
 router.get("/health", async (ctx) => {
   // create health object
   const health = {
     dbConnection: "",
-    dbClient: config.client,
+    dbClient: db.client.config.client,
     node: process.version,
     memoryUsage: {
       rss: `${Math.round((process.memoryUsage().rss / 1024 / 1024) * 100) / 100} MB`,
@@ -68,7 +73,7 @@ router.get("/health", async (ctx) => {
     uptime: `${Math.round(process.uptime() * 100) / 100} s`,
   };
   // check database connection
-  await knex(config)
+  await db
     .raw("select 1+1 as result")
     .then(() => {
       health.dbConnection = "OK";

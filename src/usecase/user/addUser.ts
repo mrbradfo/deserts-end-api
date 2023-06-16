@@ -1,7 +1,7 @@
 import { Middleware } from "koa";
 import knex from "knex";
 import { Assert, User } from "../../types";
-import config from "../../config/devolunteersDB";
+import db from "../../config/devolunteersDB";
 
 const addUser: Middleware = async (ctx) => {
   const assert: Assert = ctx.assert as Assert;
@@ -19,7 +19,6 @@ const addUser: Middleware = async (ctx) => {
 
   // cast request body to User type
   try {
-    const db = knex(config);
     const insertedUser = await db("users").insert(user);
     [user.id] = insertedUser;
     console.log("User inserted successfully");

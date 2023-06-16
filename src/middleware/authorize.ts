@@ -15,7 +15,7 @@ export default (): Middleware => {
   //   const verify = initializeVerify(options);
 
   return async (ctx, next) => {
-    console.log("authorize middleware");
+    // console.log("authorize middleware");
 
     //     const assert: Assert = ctx.assert as Assert;
     //     const authorization = (ctx.header.authorization || "").split(" ");

@@ -2,7 +2,7 @@
 import { Middleware } from "koa";
 import knex from "knex";
 import { Assert, User } from "../../types";
-import config from "../../config/devolunteersDB";
+import db from "../../config/devolunteersDB";
 
 const updateUser: Middleware = async (ctx) => {
   const assert: Assert = ctx.assert as Assert;
@@ -12,7 +12,6 @@ const updateUser: Middleware = async (ctx) => {
   assert(id, 400, "ID is required.");
 
   try {
-    const db = knex(config);
     const updatedUser = await db("users").where({ id }).update(user);
     assert(updatedUser, 404, "Error updating user.");
     if (!updatedUser) {

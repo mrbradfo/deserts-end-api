@@ -2,7 +2,7 @@
 import { Middleware } from "koa";
 import knex from "knex";
 import { Assert, Role } from "../../types";
-import config from "../../config/devolunteersDB";
+import db from "../../config/devolunteersDB";
 
 const addUserToRole: Middleware = async (ctx) => {
   const assert: Assert = ctx.assert as Assert;
@@ -14,7 +14,6 @@ const addUserToRole: Middleware = async (ctx) => {
   const { user_id } = ctx.request.body;
 
   try {
-    const db = knex(config);
     const updatedRole = await db("roles").where({ id }).update({ user_id });
 
     if (!updatedRole) {

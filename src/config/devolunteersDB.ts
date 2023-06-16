@@ -1,4 +1,4 @@
-import { Knex } from "knex";
+import knex, { Knex } from "knex";
 import * as env from "../utilities/environmentVariables";
 
 const config: Knex.Config = {
@@ -15,4 +15,6 @@ const config: Knex.Config = {
   },
 };
 
-export default config;
+const db = knex(config);
+
+export default db;
