@@ -18,3 +18,5 @@ app.listen(port, () => {
     router.stack.map((i) => i.path)
   );
 });
+
+export default app;
