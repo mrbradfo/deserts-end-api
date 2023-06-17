@@ -63,8 +63,24 @@ ON
 GROUP BY
     users.id;
 
+-- Might change roles to be teams
+-- teams table and each team has different positions, and each position has different users assigned to it
+CREATE teams 
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(1000) NOT NULL,
+    positions VARCHAR(1000) NOT NULL,
+    users VARCHAR(1000) NOT NULL,
+    date DATE NOT NULL
+);
 
-
+-- insert data into teams 
 INSERT INTO
-    positions (position)
-VALUES ('AV Technician'), ('Worship Leader'), ('Childrens Ministry'), ('Greeter'), ('Usher'), ('Parking Attendant'), ('Security'), ('Cafe'), ('Communion'), ('Prayer Team'), ('Welcome Center'), ('Facilities'), ('Office'), ('Other');
+    teams (name, description, positions, users, date)
+VALUES ('AV Team', 'Audio/Visual Team', 'Sound setup, AV tech', '1,2', '2020-01-01'),
+        ('Worship Team', 'Worship Team', 'Worship Leader, guitar, drums, vocals, piano', '4,5,6,7,8', '2020-01-01'),
+        ('Childrens Ministry', 'Childrens Ministry', 'Childrens Ministry', '7,8,9', '2020-01-01'),
+        ('Hospitality', 'Hospitality Description', 'Coffee setup, coffee, coffee teardown', '10,11,12', '2020-01-01'),
+        ('Setup/Teardown', 'Setup/Teardown description', 'setup, teardown', '13, 14', '2020-01-01');
+
+
