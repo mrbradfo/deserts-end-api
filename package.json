@@ -8,7 +8,7 @@
     "start": "tsc && env $(cat .env | grep -v \"#\" | xargs) node dist/src/app.js",
     "dev:start": "tsc && env $(cat .env | grep -v \"#\" | xargs) ts-node-dev --respawn ./src/app.ts",
     "build": "rimraf dist && tsc",
-    "vercel-build": "echo \"No build necessary\""
+    "vercel-build": "npm run build"
   },
   "repository": {
     "type": "git",
