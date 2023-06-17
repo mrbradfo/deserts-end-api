@@ -8,6 +8,9 @@ const config: Knex.Config = {
     database: env.getAsString("DB_NAME"),
     user: env.getAsString("DB_USER"),
     password: env.getAsString("DB_PASSWORD"),
+    ssl: {
+      rejectUnauthorized: false,
+    },
   },
   pool: {
     min: 1,
