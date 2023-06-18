@@ -1,9 +1,6 @@
 import Router from "koa-router";
-import knex from "knex";
 import authorize from "./middleware/authorize";
-import config from "./config/devolunteersDB";
 import addUser from "./usecase/user/addUser";
-import getAllUsers from "./usecase/user/getAllUsers";
 import getUserById from "./usecase/user/getUserById";
 import deleteById from "./usecase/deleteById";
 import addNewRole from "./usecase/role/addNewRole";
@@ -11,11 +8,9 @@ import getAll from "./usecase/getAll";
 import getById from "./usecase/getById";
 import addUserToRole from "./usecase/role/addUserToRole";
 import removeUserFromRole from "./usecase/role/removeUserFromRole";
-import updateUser from "./usecase/user/updateUser";
 import updateById from "./usecase/updateById";
 import { Role, User } from "./types";
 import { ROLES, USERS, VOLUNTEERS } from "./constants/TableNames";
-import getAllVolunteers from "./usecase/volunteer/getAllVolunteers";
 import db from "./config/devolunteersDB";
 
 const router = new Router();
@@ -23,7 +18,9 @@ const router = new Router();
 // user
 router.post("/users", authorize(), addUser);
 // router.post("/users/login", loginUser);
-router.get("/users", authorize(), getAllUsers);
+router.get("/users", authorize(), async (ctx) => {
+  return getAll(ctx, USERS);
+});
 router.get("/users/:id", authorize(), getUserById);
 router.put("/users/:id", authorize(), async (ctx) => {
   return updateById<User>(ctx, USERS);
