@@ -1,16 +1,17 @@
 /* 
- // database
- +-------------------+  +-------------------+ 
- |       users       |  |       roles       | 
- +-------------------+  +-------------------+ 
- | id                |  | id                | 
- | name              |  | user_id           | 
- | email             |  | position          | 
- | password          |  | notes             | 
- | admin             |  | date              |
- +-------------------+  +-------------------+
+// database
++-------------------+  +-------------------+ 
+|       users       |  |       roles       | 
++-------------------+  +-------------------+ 
+| id                |  | id                | 
+| name              |  | user_id           | 
+| email             |  | position          | 
+| password          |  | notes             | 
+| admin             |  | date              |
++-------------------+  +-------------------+
  */
 
+DROP TABLE IF EXISTS users;
 CREATE TABLE
     IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,66 +22,36 @@ CREATE TABLE
         admin BOOLEAN NOT NULL DEFAULT FALSE,
         blackout_dates VARCHAR(1000),
         txt_alerts BOOLEAN NOT NULL DEFAULT FALSE,
-        email_alerts BOOLEAN NOT NULL DEFAULT TRUE,
-        service_history VARCHAR(1000),
-        role_interests VARCHAR(100)
+        email_alerts BOOLEAN NOT NULL DEFAULT TRUE
     );
 
+DROP TABLE IF EXISTS teams;
 CREATE TABLE
-    IF NOT EXISTS roles (
+    IF NOT EXISTS teams (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,   -- eg. AV Team
+        description VARCHAR(1000) NOT NULL, 
+        positions VARCHAR(1000) NOT NULL -- eg. Sound setup, Sound Teardown, AV tech
+    );
+
+DROP TABLE IF EXISTS plans;
+CREATE TABLE 
+    IF NOT EXISTS plans (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,  -- sunday service 
+        description VARCHAR(1000) NOT NULL,
+        date DATE NOT NULL
+    );
+
+DROP TABLE IF EXISTS assignments;
+CREATE TABLE 
+    IF NOT EXISTS assignments (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
-        FOREIGN KEY (user_id) REFERENCES users(id),
-        user_name VARCHAR(100),
+        FOREIGN KEY (user_id) REFERENCES users (id),
+        plan_id INT,
+        FOREIGN KEY (plan_id) REFERENCES plans (id),
         position VARCHAR(100) NOT NULL,
-        notes VARCHAR(100) NOT NULL,
-        date DATE NOT NULL,
-        confirmed BOOLEAN NOT NULL DEFAULT FALSE
+        notes VARCHAR(1000),
+        date DATE NOT NULL
     );
-
--- drop view 
-DROP VIEW volunteers;
-
-CREATE VIEW volunteers AS
-SELECT
-JSON_OBJECT(
-        'id', users.id,
-        'first_name', users.first_name,
-        'last_name', users.last_name
-    ) AS user,
-    JSON_ARRAYAGG(JSON_OBJECT(
-        'id', roles.id,
-        'position', roles.position,
-        'date', roles.date,
-        'confirmed', roles.confirmed
-    )) AS roles
-FROM
-    roles
-LEFT JOIN
-    users
-ON
-    users.id = roles.user_id
-GROUP BY
-    users.id;
-
--- Might change roles to be teams
--- teams table and each team has different positions, and each position has different users assigned to it
-CREATE teams 
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(1000) NOT NULL,
-    positions VARCHAR(1000) NOT NULL,
-    users VARCHAR(1000) NOT NULL,
-    date DATE NOT NULL
-);
-
--- insert data into teams 
-INSERT INTO
-    teams (name, description, positions, users, date)
-VALUES ('AV Team', 'Audio/Visual Team', 'Sound setup, AV tech', '1,2', '2020-01-01'),
-        ('Worship Team', 'Worship Team', 'Worship Leader, guitar, drums, vocals, piano', '4,5,6,7,8', '2020-01-01'),
-        ('Childrens Ministry', 'Childrens Ministry', 'Childrens Ministry', '7,8,9', '2020-01-01'),
-        ('Hospitality', 'Hospitality Description', 'Coffee setup, coffee, coffee teardown', '10,11,12', '2020-01-01'),
-        ('Setup/Teardown', 'Setup/Teardown description', 'setup, teardown', '13, 14', '2020-01-01');
-
-

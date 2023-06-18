@@ -12,21 +12,30 @@ export type User = {
   email: string;
   password: string;
   admin: boolean;
+  blackout_dates: string;
+  txt_alerts: boolean;
+  email_alerts: boolean;
 };
 
-export type Volunteer = {
+export type Team = {
   id: number;
-  user_id: number;
-  role_id: number;
-};
-
-export type Positions = "ProPresenter" | "AV" | "CM" | "Teacher" | "Worship";
-
-export type Role = {
-  id: number;
-  user_id: number;
-  position: string;
-  date: string;
+  name: string;
   description: string;
-  confirmed: boolean;
+  positions: string;
+};
+
+export type Plan = {
+  id: number;
+  name: string;
+  description: string;
+  date: Date;
+};
+
+export type Assignment = {
+  id: number;
+  user_id: number;
+  plan_id: number;
+  position: string;
+  notes: string;
+  date: Date;
 };

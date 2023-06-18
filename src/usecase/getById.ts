@@ -13,7 +13,7 @@ const getById = async (ctx: ParameterizedContext, table: string) => {
     const result = await db(table).where({ id }).first();
     console.log("result", result);
 
-    assert(result, 404, `${table}s not found.`);
+    assert(result, 404, `${table} not found.`);
     ctx.body = result;
   } catch (error: any) {
     console.error(`Error getting ${table} by id`, error);
