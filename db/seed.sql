@@ -1,40 +1,36 @@
-
-INSERT INTO
-    users (first_name, last_name, email, password, admin, blackout_dates, txt_alerts, email_alerts)
+-- Dummy data for the 'users' table
+INSERT INTO users (first_name, last_name, email, password, admin, blackout_dates, txt_alerts, email_alerts)
 VALUES
-    ('John', 'Doe', 'john@example.com', 'password123', FALSE, "", TRUE, FALSE),
-    ('Jane', 'Smith', 'jane@example.com', 'password456', TRUE, "", FALSE, TRUE),
-    ('David', 'Johnson', 'david@example.com', 'password789', FALSE, "2019-01-01, 2019-01-02", TRUE, TRUE),
-    ('Emily', 'Brown', 'emily@example.com', 'password321', FALSE, "2019-01-01, 2019-01-02", FALSE, FALSE),
-    ('Michael', 'Wilson', 'michael@example.com', 'password654', FALSE, "", TRUE, TRUE);
+  ('John', 'Doe', 'john.doe@example.com', 'password123', FALSE, '2023-04-10, 2023-04-17', TRUE, TRUE),
+  ('Jane', 'Smith', 'jane.smith@example.com', 'pass456', TRUE, '2023-04-24, 2023-05-01', FALSE, TRUE),
+  ('Mike', 'Johnson', 'mike.johnson@example.com', 'secret789', FALSE, '2023-04-17, 2023-04-24', TRUE, FALSE);
 
-
-
-
-INSERT INTO
-    teams (name, description, positions)
+-- Dummy data for the 'plans' table
+INSERT INTO plans (name, confirmed_count, pending_count, declined_count, description, date)
 VALUES
-    ('AV Team', 'Audio/Visual Team', '["Sound setup", "Sound Teardown", "AV tech"]'),
-    ('Worship Team', 'Worship Team', '["Worship Leader", "guitar", "drums", "vocals", "piano"]'),
-    ('Childrens Ministry', 'Childrens Ministry', '["Childrens Ministry"]'),
-    ('Hospitality', 'Hospitality Description', '["Coffee setup", "coffee", "coffee teardown"]'),
-    ('Setup/Teardown', 'Setup/Teardown description', '["setup", "teardown"]');
+  ('Sunday Service', 10, 5, 2, 'Weekly Sunday service', '2023-04-09'),
+  ('Volunteer Event', 20, 8, 3, 'Community volunteer event', '2023-04-15');
 
-
-INSERT INTO
-    plans (name, description, date)
-VALUES 
-    ('Sunday Service', 'Sunday service description', '2023-11-05'),
-    ('Sunday Service', 'Sunday service description', '2023-11-12'),
-    ('Sunday Service', 'Sunday service description', '2023-11-19'),
-    ('Sunday Service', 'Sunday service description', '2023-11-26'),
-    ('Sunday Service', 'Sunday service description', '2023-12-03');
-
-INSERT INTO
-    assignments (user_id, plan_id, position, notes, date)
+-- Dummy data for the 'teams' table
+INSERT INTO teams (name, description, plan_id)
 VALUES
-    (1, 1, 'Sound setup', 'Sound setup notes', '2023-11-05'),
-    (2, 1, 'Sound Teardown', 'Sound Teardown notes', '2023-11-05'),
-    (3, 1, 'AV tech', 'AV tech notes', '2023-11-05'),
-    (4, 1, 'Worship Leader', 'Worship Leader notes', '2023-11-05'),
-    (5, 1, 'guitar', 'guitar notes', '2023-11-05');
+  ('Hospitality Team', 'Team responsible for welcoming and assisting guests', 1),
+  ('Technical Team', 'Team responsible for sound and visual setup', 1),
+  ('Event Crew', 'Team responsible for managing event logistics', 2);
+
+-- Dummy data for the 'positions' table
+INSERT INTO positions (name, team_id, capacity, filled)
+VALUES
+  ('Greeter', 1, 5, 3),
+  ('Usher', 1, 3, 2),
+  ('Sound Engineer', 2, 2, 2),
+  ('Stage Crew', 3, 4, 3);
+
+-- Dummy data for the 'volunteers' table
+INSERT INTO volunteers (user_id, plan_id, position_id, confirmation_status, notes)
+VALUES
+  (1, 1, 1, 'Confirmed', 'Available for the entire service'),
+  (2, 1, 2, 'Pending', 'Will confirm by Thursday'),
+  (3, 2, 4, 'Declined', 'Unable to attend on that date');
+
+

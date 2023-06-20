@@ -25,33 +25,66 @@ CREATE TABLE
         email_alerts BOOLEAN NOT NULL DEFAULT TRUE
     );
 
-DROP TABLE IF EXISTS teams;
-CREATE TABLE
-    IF NOT EXISTS teams (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,   -- eg. AV Team
-        description VARCHAR(1000) NOT NULL, 
-        positions VARCHAR(1000) NOT NULL -- eg. Sound setup, Sound Teardown, AV tech
-    );
-
 DROP TABLE IF EXISTS plans;
 CREATE TABLE 
     IF NOT EXISTS plans (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,  -- sunday service 
+        confirmed_count INT NOT NULL,
+        pending_count INT NOT NULL,
+        declined_count INT NOT NULL,
         description VARCHAR(1000) NOT NULL,
         date DATE NOT NULL
     );
 
-DROP TABLE IF EXISTS assignments;
+
+DROP TABLE IF EXISTS teams;
 CREATE TABLE 
-    IF NOT EXISTS assignments (
+    IF NOT EXISTS teams (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
+        name VARCHAR(100) NOT NULL,
+        description VARCHAR(1000) NOT NULL,
+        plan_id INT,
+        FOREIGN KEY (plan_id) REFERENCES plans (id)
+    );
+
+
+DROP TABLE IF EXISTS positions;
+CREATE TABLE
+    IF NOT EXISTS positions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        team_id INT,
+        FOREIGN KEY (team_id) REFERENCES teams (id),
+        capacity INT NOT NULL,
+        filled INT NOT NULL
+    );
+
+DROP TABLE IF EXISTS volunteers;
+CREATE TABLE 
+    IF NOT EXISTS volunteers (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NULL,
         FOREIGN KEY (user_id) REFERENCES users (id),
         plan_id INT,
         FOREIGN KEY (plan_id) REFERENCES plans (id),
-        position VARCHAR(100) NOT NULL,
-        notes VARCHAR(1000),
-        date DATE NOT NULL
+        position_id INT,
+        FOREIGN KEY (position_id) REFERENCES positions (id),
+        confirmation_status VARCHAR(100) NOT NULL,
+        notes VARCHAR(1000)
     );
+
+
+
+-- query to get all volunteers for a givin position 
+-- SELECT * FROM volunteers WHERE position_id = 1;
+
+-- SELECT Positions.id, Positions.name
+-- FROM Positions
+-- JOIN Teams ON Positions.team_id = Teams.id
+-- WHERE Teams.id = <team_id>;
+
+
+
+
+

@@ -6,8 +6,8 @@ import getUserById from "./usecase/user/getUserById";
 import deleteById from "./usecase/deleteById";
 import getAll from "./usecase/getAll";
 import getById from "./usecase/getById";
-import { Assignment, Plan, Team, User } from "./types";
-import { USERS, TEAMS, PLANS, ASSIGNMENTS } from "./constants/TableNames";
+import { Volunteer, Plan, Team, User, Position } from "./types";
+import { USERS, TEAMS, PLANS, POSITIONS, VOLUNTEERS } from "./constants/TableNames";
 import getHealth from "./utilities/getHealth";
 import addNewEntity from "./usecase/addNewEntity";
 import updateById from "./usecase/updateById copy";
@@ -19,6 +19,12 @@ router.get("/users/:id", authorize(), async (ctx) => getById(ctx, USERS));
 router.post("/users", authorize(), addUser);
 router.put("/users/:id", authorize(), async (ctx) => updateById<User>(ctx, USERS));
 router.delete("/users/:id", authorize(), async (ctx) => deleteById(ctx, USERS));
+
+router.get("/volunteers", authorize(), async (ctx) => getAll(ctx, VOLUNTEERS));
+router.get("/volunteers/:id", authorize(), async (ctx) => getById(ctx, VOLUNTEERS));
+router.post("/volunteers", authorize(), async (ctx) => addNewEntity<Volunteer>(ctx, VOLUNTEERS));
+router.put("/volunteers/:id", authorize(), async (ctx) => updateById<User>(ctx, VOLUNTEERS));
+router.delete("/volunteers/:id", authorize(), async (ctx) => deleteById(ctx, VOLUNTEERS));
 
 router.get("/teams", authorize(), async (ctx) => getAll(ctx, TEAMS));
 router.get("/teams/:id", authorize(), async (ctx) => getById(ctx, TEAMS));
@@ -32,11 +38,11 @@ router.post("/plans", authorize(), async (ctx) => addNewEntity<Plan>(ctx, PLANS)
 router.put("/plans/:id", authorize(), async (ctx) => updateById<Plan>(ctx, PLANS));
 router.delete("/plans/:id", authorize(), async (ctx) => deleteById(ctx, PLANS));
 
-router.get("/assignments", authorize(), async (ctx) => getAll(ctx, ASSIGNMENTS));
-router.get("/assignments/:id", authorize(), async (ctx) => getById(ctx, ASSIGNMENTS));
-router.post("/assignments", authorize(), async (ctx) => addNewEntity<Assignment>(ctx, ASSIGNMENTS));
-router.put("/assignments/:id", authorize(), async (ctx) => updateById<Assignment>(ctx, ASSIGNMENTS));
-router.delete("/assignments/:id", authorize(), async (ctx) => deleteById(ctx, ASSIGNMENTS));
+router.get("/positions", authorize(), async (ctx) => getAll(ctx, POSITIONS));
+router.get("/positions/:id", authorize(), async (ctx) => getById(ctx, POSITIONS));
+router.post("/positions", authorize(), async (ctx) => addNewEntity<Position>(ctx, POSITIONS));
+router.put("/positions/:id", authorize(), async (ctx) => updateById<Position>(ctx, POSITIONS));
+router.delete("/positions/:id", authorize(), async (ctx) => deleteById(ctx, POSITIONS));
 
 router.get("/health", async (ctx) => getHealth(ctx));
 
