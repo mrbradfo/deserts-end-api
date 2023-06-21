@@ -13,10 +13,21 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  console.log(
-    "routes",
-    router.stack.map((i) => i.path)
-  );
+
+  /* const uniqueRoutes = new Set();
+  router.stack.forEach((route) => {
+    if (route.methods.length > 0) {
+      route.methods.forEach((method) => {
+        if (method === "HEAD") return;
+        if (uniqueRoutes.has(`${method.toUpperCase()} ${route.path}`)) return;
+        uniqueRoutes.add(`${method.toUpperCase()} ${route.path}`);
+      });
+    }
+  });
+  console.log("Routes:");
+  uniqueRoutes.forEach((route) => {
+    console.log(route);
+  }); */
 });
 
 export default app;

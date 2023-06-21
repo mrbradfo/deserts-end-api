@@ -1,89 +1,53 @@
+/* eslint-disable prettier/prettier */
 import Router from "koa-router";
-import knex from "knex";
 import authorize from "./middleware/authorize";
-import config from "./config/devolunteersDB";
 import addUser from "./usecase/user/addUser";
-import getAllUsers from "./usecase/user/getAllUsers";
-import getUserById from "./usecase/user/getUserById";
 import deleteById from "./usecase/deleteById";
-import addNewRole from "./usecase/role/addNewRole";
 import getAll from "./usecase/getAll";
 import getById from "./usecase/getById";
-import addUserToRole from "./usecase/role/addUserToRole";
-import removeUserFromRole from "./usecase/role/removeUserFromRole";
-import updateUser from "./usecase/user/updateUser";
-import updateById from "./usecase/updateById";
-import { Role, User } from "./types";
-import { ROLES, USERS, VOLUNTEERS } from "./constants/TableNames";
-import getAllVolunteers from "./usecase/volunteer/getAllVolunteers";
-import db from "./config/devolunteersDB";
+import { Volunteer, Plan, Team, User, Position } from "./types";
+import { USERS, TEAMS, PLANS, POSITIONS, VOLUNTEERS, PLANS_VIEW } from "./constants/TableNames";
+import getHealth from "./utilities/getHealth";
+import addNewEntity from "./usecase/addNewEntity";
+import updateById from "./usecase/updateById copy";
+import getPlanById from "./usecase/plans/getPlanById";
 
 const router = new Router();
 
-// user
+router.get("/users", authorize(), async (ctx) => getAll(ctx, USERS));
+router.get("/users/:id", authorize(), async (ctx) => getById(ctx, USERS));
 router.post("/users", authorize(), addUser);
-// router.post("/users/login", loginUser);
-router.get("/users", authorize(), getAllUsers);
-router.get("/users/:id", authorize(), getUserById);
-router.put("/users/:id", authorize(), async (ctx) => {
-  return updateById<User>(ctx, USERS);
-});
-router.delete("/users/:id", authorize(), async (ctx) => {
-  return deleteById(ctx, USERS);
-});
+router.put("/users/:id", authorize(), async (ctx) => updateById<User>(ctx, USERS));
+router.delete("/users/:id", authorize(), async (ctx) => deleteById(ctx, USERS));
 
-// role
-router.get("/roles", authorize(), async (ctx) => {
-  return getAll(ctx, ROLES);
-});
-router.get("/roles/:id", authorize(), async (ctx) => {
-  return getById(ctx, ROLES);
-});
-router.post("/roles", authorize(), addNewRole);
-router.put("/roles/:id/add", authorize(), addUserToRole);
-router.put("/roles/:id", authorize(), async (ctx) => {
-  return updateById<Role>(ctx, ROLES);
-});
+router.get("/volunteers", authorize(), async (ctx) => getAll(ctx, VOLUNTEERS));
+router.get("/volunteers/:id", authorize(), async (ctx) => getById(ctx, VOLUNTEERS));
+router.post("/volunteers", authorize(), async (ctx) => addNewEntity<Volunteer>(ctx, VOLUNTEERS));
+router.put("/volunteers/:id", authorize(), async (ctx) => updateById<User>(ctx, VOLUNTEERS));
+router.delete("/volunteers/:id", authorize(), async (ctx) => deleteById(ctx, VOLUNTEERS));
 
-router.put("/roles/:id/remove", authorize(), removeUserFromRole);
-router.delete("/roles/:id", authorize(), async (ctx) => {
-  return deleteById(ctx, ROLES);
-});
-router.delete("/roles/user/:id/", authorize(), removeUserFromRole);
+router.get("/teams", authorize(), async (ctx) => getAll(ctx, TEAMS));
+router.get("/teams/:id", authorize(), async (ctx) => getById(ctx, TEAMS));
+router.post("/teams", authorize(), async (ctx) => addNewEntity<Team>(ctx, TEAMS));
+router.put("/teams/:id", authorize(), async (ctx) => updateById<Team>(ctx, TEAMS));
+router.delete("/teams/:id", authorize(), async (ctx) => deleteById(ctx, TEAMS));
 
-router.get("/volunteers", authorize(), async (ctx) => {
-  return getAll(ctx, VOLUNTEERS);
-});
-router.get("/health", async (ctx) => {
-  // create health object
-  const health = {
-    dbConnection: "",
-    dbClient: db.client.config.client,
-    node: process.version,
-    memoryUsage: {
-      rss: `${Math.round((process.memoryUsage().rss / 1024 / 1024) * 100) / 100} MB`,
-      heapTotal: `${Math.round((process.memoryUsage().heapTotal / 1024 / 1024) * 100) / 100} MB`,
-      heapUsed: `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`,
-      external: `${Math.round((process.memoryUsage().external / 1024 / 1024) * 100) / 100} MB`,
-      arrayBuffers: `${
-        Math.round((process.memoryUsage().arrayBuffers / 1024 / 1024) * 100) / 100
-      } MB`,
-    },
-    pid: process.pid,
-    uptime: `${Math.round(process.uptime() * 100) / 100} s`,
-  };
-  // check database connection
-  await db
-    .raw("select 1+1 as result")
-    .then(() => {
-      health.dbConnection = "OK";
-    })
-    .catch((err) => {
-      health.dbConnection = err;
-    })
-    .finally(() => {
-      ctx.body = health;
-    });
-});
+router.get("/plans", authorize(), async (ctx) => getAll(ctx, PLANS));
+router.get("/plans/:id", authorize(), getPlanById);
+router.post("/plans", authorize(), async (ctx) => addNewEntity<Plan>(ctx, PLANS));
+router.put("/plans/:id", authorize(), async (ctx) => updateById<Plan>(ctx, PLANS));
+router.delete("/plans/:id", authorize(), async (ctx) => deleteById(ctx, PLANS));
+
+// get plans view by id
+router.get("/plans_view/:id", authorize(), async (ctx) => getById(ctx, PLANS_VIEW));
+router.get("/plans_view", authorize(), async (ctx) => getAll(ctx, PLANS_VIEW));
+
+router.get("/positions", authorize(), async (ctx) => getAll(ctx, POSITIONS));
+router.get("/positions/:id", authorize(), async (ctx) => getById(ctx, POSITIONS));
+router.post("/positions", authorize(), async (ctx) => addNewEntity<Position>(ctx, POSITIONS));
+router.put("/positions/:id", authorize(), async (ctx) => updateById<Position>(ctx, POSITIONS));
+router.delete("/positions/:id", authorize(), async (ctx) => deleteById(ctx, POSITIONS));
+
+router.get("/health", async (ctx) => getHealth(ctx));
 
 export default router;
