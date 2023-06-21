@@ -1,9 +1,4 @@
-export type Assert = <T = any>(
-  value: T,
-  status?: number,
-  msg?: string,
-  opts?: {}
-) => asserts value is NonNullable<T>;
+export type Assert = <T = any>(value: T, status?: number, msg?: string, opts?: {}) => asserts value is NonNullable<T>;
 
 export type User = {
   id: number;
@@ -18,7 +13,6 @@ export type User = {
 };
 
 export type Volunteer = {
-  // only shows when a user gets assigned to a position
   id: number;
   user: User;
   plan_id: number;
@@ -44,14 +38,17 @@ export type Team = {
 export type Plan = {
   id: number;
   name: string;
-  confirmed: number;
-  pending: number;
-  declined: number;
+  confirmed_count: number;
+  pending_count: number;
+  declined_count: number;
   teams: Team[];
   date: Date;
 };
 
-// const plan: Plan;
+export type PlanView = {
+  id: number;
+  plan: Plan;
+};
 
 // plan.teams.map((team) => ({
 //   <div>{team.name}</div>

@@ -2,15 +2,15 @@
 import Router from "koa-router";
 import authorize from "./middleware/authorize";
 import addUser from "./usecase/user/addUser";
-import getUserById from "./usecase/user/getUserById";
 import deleteById from "./usecase/deleteById";
 import getAll from "./usecase/getAll";
 import getById from "./usecase/getById";
 import { Volunteer, Plan, Team, User, Position } from "./types";
-import { USERS, TEAMS, PLANS, POSITIONS, VOLUNTEERS } from "./constants/TableNames";
+import { USERS, TEAMS, PLANS, POSITIONS, VOLUNTEERS, PLANS_VIEW } from "./constants/TableNames";
 import getHealth from "./utilities/getHealth";
 import addNewEntity from "./usecase/addNewEntity";
 import updateById from "./usecase/updateById copy";
+import getPlanById from "./usecase/plans/getPlanById";
 
 const router = new Router();
 
@@ -33,10 +33,14 @@ router.put("/teams/:id", authorize(), async (ctx) => updateById<Team>(ctx, TEAMS
 router.delete("/teams/:id", authorize(), async (ctx) => deleteById(ctx, TEAMS));
 
 router.get("/plans", authorize(), async (ctx) => getAll(ctx, PLANS));
-router.get("/plans/:id", authorize(), async (ctx) => getById(ctx, PLANS));
+router.get("/plans/:id", authorize(), getPlanById);
 router.post("/plans", authorize(), async (ctx) => addNewEntity<Plan>(ctx, PLANS));
 router.put("/plans/:id", authorize(), async (ctx) => updateById<Plan>(ctx, PLANS));
 router.delete("/plans/:id", authorize(), async (ctx) => deleteById(ctx, PLANS));
+
+// get plans view by id
+router.get("/plans_view/:id", authorize(), async (ctx) => getById(ctx, PLANS_VIEW));
+router.get("/plans_view", authorize(), async (ctx) => getAll(ctx, PLANS_VIEW));
 
 router.get("/positions", authorize(), async (ctx) => getAll(ctx, POSITIONS));
 router.get("/positions/:id", authorize(), async (ctx) => getById(ctx, POSITIONS));

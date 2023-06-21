@@ -11,7 +11,9 @@
 +-------------------+  +-------------------+
  */
 
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users, plans, teams, positions, volunteers;
+
+
 CREATE TABLE
     IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -25,7 +27,6 @@ CREATE TABLE
         email_alerts BOOLEAN NOT NULL DEFAULT TRUE
     );
 
-DROP TABLE IF EXISTS plans;
 CREATE TABLE 
     IF NOT EXISTS plans (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -38,7 +39,6 @@ CREATE TABLE
     );
 
 
-DROP TABLE IF EXISTS teams;
 CREATE TABLE 
     IF NOT EXISTS teams (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -49,18 +49,16 @@ CREATE TABLE
     );
 
 
-DROP TABLE IF EXISTS positions;
 CREATE TABLE
     IF NOT EXISTS positions (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         team_id INT,
         FOREIGN KEY (team_id) REFERENCES teams (id),
-        capacity INT NOT NULL,
-        filled INT NOT NULL
+        capacity_count INT NOT NULL,
+        filled_count INT NOT NULL
     );
 
-DROP TABLE IF EXISTS volunteers;
 CREATE TABLE 
     IF NOT EXISTS volunteers (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -73,6 +71,72 @@ CREATE TABLE
         confirmation_status VARCHAR(100) NOT NULL,
         notes VARCHAR(1000)
     );
+
+
+-- create view of Plan with a list of all Teams and their Positions and Volunteers
+
+
+-- create view of Plan with a list of all Teams and for each team match the team_id to a position as a JSON object 
+CREATE VIEW plans_view AS
+SELECT
+    Plans.id AS id,
+    Plans.name AS plan_name,
+    Plans.date AS plan_date,
+    JSON_OBJECT(
+        'id', Plans.id,
+        'name', Plans.name,
+        'confirmed_count', Plans.confirmed_count,
+        'pending_count', Plans.pending_count,
+        'declined_count', Plans.declined_count,
+        'date', Plans.date,
+        'teams', (
+            SELECT JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'id', Teams.id,
+                    'name', Teams.name,
+                    'description', Teams.description,
+                    'positions', (
+                        SELECT JSON_ARRAYAGG(
+                            JSON_OBJECT(
+                                'id', Positions.id,
+                                'name', Positions.name,
+                                'capacity_count', Positions.capacity_count,
+                                'filled_count', Positions.filled_count,
+                                'volunteers', (
+                                    SELECT JSON_ARRAYAGG(
+                                        JSON_OBJECT(
+                                            'id', Volunteers.id,
+                                            'confirmation_status', Volunteers.confirmation_status,
+                                            'notes', Volunteers.notes,
+                                            'user', JSON_OBJECT(
+                                                'id', Users.id,
+                                                'first_name', Users.first_name,
+                                                'last_name', Users.last_name
+                                            )
+                                        )
+                                    )
+                                    FROM Volunteers
+                                    JOIN Users ON Volunteers.user_id = Users.id
+                                    WHERE Volunteers.position_id = Positions.id
+                                        AND Volunteers.plan_id = Plans.id
+                                )
+                            )
+                        )
+                        FROM Positions
+                        WHERE Positions.team_id = Teams.id
+                    )
+                )
+            )
+            FROM Teams
+            WHERE Teams.plan_id = Plans.id
+        )
+    ) as plan
+FROM Plans;
+
+
+
+
+
 
 
 
