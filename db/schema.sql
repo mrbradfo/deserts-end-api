@@ -59,6 +59,17 @@ CREATE TABLE
         filled_count INT NOT NULL
     );
 
+-- // event_teams table
+CREATE TABLE
+    IF NOT EXISTS event_teams (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        event_id INT,
+        FOREIGN KEY (event_id) REFERENCES events (id),
+        team_id INT,
+        FOREIGN KEY (team_id) REFERENCES teams (id)
+    );
+    
+
 CREATE TABLE 
     IF NOT EXISTS volunteers (
         id INT AUTO_INCREMENT PRIMARY KEY,
