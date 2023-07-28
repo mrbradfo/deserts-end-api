@@ -16,10 +16,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "jest"],
   rules: {
-    "import/no-extraneous-dependencies": [
-      "error",
-      { devDependencies: ["**/selenium.ts", "**/setup.ts"] },
-    ],
+    "import/no-extraneous-dependencies": ["error", { devDependencies: ["**/selenium.ts", "**/setup.ts", "**/*.test.ts", "**/*.spec.js"] }],
     "import/extensions": [
       "error",
       "ignorePackages",
