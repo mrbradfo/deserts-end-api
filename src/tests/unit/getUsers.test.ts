@@ -16,11 +16,11 @@ beforeAll(() => {
 });
 
 test("GET /users/:id should return a user", async () => {
+  console.log("TESTING");
   const response = await request(app).get("/users/1");
   console.log("response: ", response);
 
   expect(response.status).toBe(200);
   expect(response.body).toHaveProperty("id");
   expect(response.body).toHaveProperty("name");
-  // Add more assertions as needed
 });
