@@ -9,19 +9,30 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      PORT: ${{ secrets.PORT }}
+      API_KEY: ${{ secrets.MY_SECRET_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: npm version
         run: |
           npm --version
+
       - name: node version
         run: |
           node --version
+
       - name: npm install
         run: |
           npm install
-      - run: npm run test
+
+              env:
+
+      - name: npm test
+        run: |
+          npm run test
 
   build:
     runs-on: ubuntu-latest
