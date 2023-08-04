@@ -7,6 +7,12 @@ on:
     branches: [master]
 
 jobs:
+  run-github-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
   install-npm:
     runs-on: ubuntu-latest
     steps:
@@ -37,14 +43,3 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm run build
     needs: test
-
-  run-github-action:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Simple JS action
-        id: greet
-        uses: actions/hello-world-javascript-action@v1.1
-        with:
-          who-to-greet: "Mona the Octocat"
-      - name: Log Greeting Time
-        run: echo "The time was ${{ steps.greet.outputs.time }}"
