@@ -7,23 +7,12 @@ on:
     branches: [master]
 
 jobs:
-  install-npm:
+  test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: npm version
-        run: |
-          npm --version
-
-      - name: node version
-        run: |
-          node --version
-
-      - name: npm install
-        run: |
-          npm install
 
       - name: Cache node_modules
         uses: actions/cache@v2
@@ -33,18 +22,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
-  test:
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+  build:
+    needs: test
     runs-on: ubuntu-latest
     env:
       PORT: ${{ secrets.PORT }}
     steps:
-      - uses: actions/checkout@v2
-      - run: npm run test
-    needs: install-npm
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: npm run build
-    needs: test
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
