@@ -9,7 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    env:
+      PORT: ${{ secrets.PORT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -31,8 +32,6 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
-    env:
-      PORT: ${{ secrets.PORT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
