@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PORT: ${{ secrets.PORT }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,6 +23,11 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.17.0
 
       - name: Install dependencies
         run: npm install
@@ -43,6 +49,11 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.17.0
 
       - name: Install dependencies
         run: npm install
