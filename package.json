@@ -7,7 +7,7 @@
     "test": "jest --coverage",
     "start": "tsc && env $(cat .env | grep -v \"#\" | xargs) node dist/src/app.js",
     "dev:start": "tsc && env $(cat .env | grep -v \"#\" | xargs) ts-node-dev --respawn ./src/app.ts",
-    "build": "rimraf dist && tsc",
+    "build": "rm -rf dist && tsc",
     "vercel-build": "npm run build"
   },
   "repository": {
