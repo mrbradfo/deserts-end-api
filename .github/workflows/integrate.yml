@@ -7,19 +7,11 @@ on:
     branches: [master]
 
 jobs:
-  run-github-action:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-  install-npm:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run shell command
-        run: |
-          echo "Hello Mom!"
       - name: npm version
         run: |
           npm --version
@@ -29,13 +21,7 @@ jobs:
       - name: npm install
         run: |
           npm install
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
       - run: npm run test
-    needs: install-npm
 
   build:
     runs-on: ubuntu-latest
