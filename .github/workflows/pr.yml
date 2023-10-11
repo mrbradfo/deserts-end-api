@@ -25,6 +25,7 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             console.log(context);
+            console.log(github);
             const prNumber = context.payload.pull_request.number;
             const comment = "Hello, this is an automated comment on your PR!";
             github.issues.createComment({
