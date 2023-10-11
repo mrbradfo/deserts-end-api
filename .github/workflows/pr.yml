@@ -1,7 +1,6 @@
 name: action to run when pull request is opened
 
 on:
-  push:
   pull_request:
     types: [opened]
 
@@ -23,13 +22,11 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN }}
           script: |
-            console.log(context);
-            console.log(github);
             const prNumber = context.payload.pull_request.number;
-            const comment = "Hello, this is an automated comment on your PR!";
+            const comment = `Hello @${context.payload.pull_request.user.login}! Thanks for opening this PR. I'll be back soon to review it. :smile:`;
             github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.issue.number,
+                issue_number: prNumber,
                 body: comment
             });
