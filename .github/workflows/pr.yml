@@ -23,7 +23,7 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN }}
           script: |
-            const newIssueComment = `Hello @${context.payload.pull_request.user.login}! Thanks for opening this pull request!`;
+            const newIssueComment = `Hello! Thanks for opening this pull request!`;
             github.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
