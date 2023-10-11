@@ -24,7 +24,7 @@ jobs:
           github-token: ${{ secrets.TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            console.log(context.payload.pull_request);
+            console.log(context);
             const prNumber = context.payload.pull_request.number;
             const comment = "Hello, this is an automated comment on your PR!";
             github.issues.createComment({
