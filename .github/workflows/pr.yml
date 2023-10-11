@@ -16,12 +16,12 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TOKEN: ${{ secrets.TOKEN }}
     steps:
       - name: Comment on new PRs
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.TOKEN }}
           script: |
             const newIssueComment = `Hello @${context.payload.pull_request.user.login}! Thanks for opening this pull request!`;
             github.issues.createComment({
