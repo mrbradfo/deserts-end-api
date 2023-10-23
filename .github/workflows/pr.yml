@@ -1,0 +1,17 @@
+name: action to run when pull request is opened
+
+on: 
+    push:
+    pull_request:
+        types: [opened]
+
+
+jobs:
+    echo:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: echo
+              run: echo "hello mom! I just opened a pull request."
+              
+              

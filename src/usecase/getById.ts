@@ -1,5 +1,4 @@
-import { Middleware, ParameterizedContext } from "koa";
-import knex from "knex";
+import { ParameterizedContext } from "koa";
 import { Assert } from "../types";
 import db from "../config/devolunteersDB";
 
