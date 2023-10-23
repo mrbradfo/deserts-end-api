@@ -10,7 +10,7 @@ jobs:
     echo:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
             - name: echo
               run: echo "hello mom! I just opened a pull request."
               
