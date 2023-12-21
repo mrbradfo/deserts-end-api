@@ -44,7 +44,7 @@
     "@types/koa-router": "^7.4.4",
     "@types/node-schedule": "^2.1.0",
     "@types/nodemailer": "^6.4.13",
-    "@typescript-eslint/parser": "^5.59.8",
+    "@typescript-eslint/parser": "^5.62.0",
     "axios": "^1.6.2",
     "dotenv": "^16.3.1",
     "http-status-codes": "^2.3.0",
