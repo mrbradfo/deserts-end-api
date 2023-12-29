@@ -19,6 +19,7 @@ jobs:
 
   pull-build-run:
     runs-on: ubuntu-latest
+    needs: login-to-amazon
     steps:
       - name: pull image from ECR
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
