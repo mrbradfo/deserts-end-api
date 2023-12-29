@@ -1,0 +1,13 @@
+# server configuration
+PORT=4545
+ENV_TYPE=development
+
+# db configuration
+DB_HOST=127.0.0.1
+DB_NAME=volunteers_db
+DB_USER=root
+DB_PASSWORD=password
+TIMZONE=UTC
+DB_CONN_POOL=10
+
+JWT_SECRET=secret
