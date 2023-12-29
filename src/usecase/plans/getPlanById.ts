@@ -1,9 +1,9 @@
 /* eslint-disable no-restricted-syntax */
 import { Middleware } from "koa";
+import { log } from "console";
 import { Assert } from "../../types";
 import db from "../../config/devolunteersDB";
 import { PLANS, PLANS_VIEW, POSITIONS, TEAMS } from "../../constants/TableNames";
-import { log } from "console";
 
 /* id: number;
 name: string;

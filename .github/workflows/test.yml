@@ -6,11 +6,63 @@ on:
   pull_request:
     branches: [develop]
 
-env:
-  aws-region: ${{ secrets.AWS_REGION }}
-
 jobs:
-  run-tests:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: "npm"
+
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+  lint:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: "npm"
+
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: "npm"
+
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+  integration-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
