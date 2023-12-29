@@ -29,7 +29,7 @@ jobs:
         run: docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/volunteers_db:latest
 
       - name: run image
-        run: docker run -d -p 3306:3306 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/volunteers_db:latest
+        run: docker run -p 3306:3306 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/volunteers_db:latest
 
       - uses: actions/checkout@v4
       - name: Use Node.js

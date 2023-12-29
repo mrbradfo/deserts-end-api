@@ -45,7 +45,7 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-Adding Tyescript to vercel project: https://vercel.com/guides/using-typescript-with-create-react-app
+Adding Typescript to vercel project: https://vercel.com/guides/using-typescript-with-create-react-app
 
 ## auth
 
@@ -74,7 +74,7 @@ docker pull 993218997925.dkr.ecr.us-east-1.amazonaws.com/volunteers_db:latest
 ## build image
 
 ```bash
-docker build -t volunteers_db .
+docker build --platform linux/amd64 -t volunteers_db .
 ```
 
 ## run
