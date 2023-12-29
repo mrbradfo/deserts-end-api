@@ -10,7 +10,7 @@ env:
   aws-region: ${{ secrets.AWS_REGION }}
 
 jobs:
-  pull-build-run:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
@@ -19,6 +19,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Pull DB image from ECR
         run: docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/volunteers_db:latest
