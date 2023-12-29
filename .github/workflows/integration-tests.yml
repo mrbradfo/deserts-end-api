@@ -30,9 +30,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: pull image from ECR
-        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
-
-      - name: pull image from ECR
         run: docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/volunteers_db:latest
 
       - name: run image
