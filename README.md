@@ -46,3 +46,39 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 Adding Tyescript to vercel project: https://vercel.com/guides/using-typescript-with-create-react-app
+
+## auth
+
+```bash
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 993218997925.dkr.ecr.us-east-1.amazonaws.com
+```
+
+## tag
+
+```bash
+docker tag volunteers_db:latest 993218997925.dkr.ecr.us-east-1.amazonaws.com/volunteers_db:latest
+```
+
+## push
+
+```bash
+docker push 993218997925.dkr.ecr.us-east-1.amazonaws.com/volunteers_db:latest
+```
+
+## pull
+
+```bash
+docker pull 993218997925.dkr.ecr.us-east-1.amazonaws.com/volunteers_db:latest
+```
+
+## build image
+
+```bash
+docker build -t volunteers_db .
+```
+
+## run
+
+```bash
+docker run -p 3306:3306 --name volunteers_db volunteers_db
+```

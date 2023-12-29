@@ -1,7 +1,8 @@
+-- Active: 1687303757803@@127.0.0.1@3306@volunteers_db
 /* 
 // database
 +-------------------+  +-------------------+ 
-|       users       |  |       roles       | 
+|       Users       |  |       roles       | 
 +-------------------+  +-------------------+ 
 | id                |  | id                | 
 | name              |  | user_id           | 
@@ -11,11 +12,16 @@
 +-------------------+  +-------------------+
  */
 
-DROP TABLE IF EXISTS users, plans, teams, positions, volunteers;
+
+
+ CREATE DATABASE IF NOT EXISTS volunteers_db;
+ USE volunteers_db;
+
+DROP TABLE IF EXISTS Users, Plans, Teams, positions, volunteers;
 
 
 CREATE TABLE
-    IF NOT EXISTS users (
+    IF NOT EXISTS Users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         first_name VARCHAR(100) NOT NULL,
         last_name VARCHAR(100) NOT NULL,
@@ -28,7 +34,7 @@ CREATE TABLE
     );
 
 CREATE TABLE 
-    IF NOT EXISTS plans (
+    IF NOT EXISTS Plans (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,  -- sunday service 
         confirmed_count INT NOT NULL,
@@ -40,12 +46,12 @@ CREATE TABLE
 
 
 CREATE TABLE 
-    IF NOT EXISTS teams (
+    IF NOT EXISTS Teams (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         description VARCHAR(1000) NOT NULL,
         plan_id INT,
-        FOREIGN KEY (plan_id) REFERENCES plans (id)
+        FOREIGN KEY (plan_id) REFERENCES Plans (id)
     );
 
 
@@ -54,29 +60,19 @@ CREATE TABLE
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         team_id INT,
-        FOREIGN KEY (team_id) REFERENCES teams (id),
+        FOREIGN KEY (team_id) REFERENCES Teams (id),
         capacity_count INT NOT NULL,
         filled_count INT NOT NULL
     );
 
--- // event_teams table
-CREATE TABLE
-    IF NOT EXISTS event_teams (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        event_id INT,
-        FOREIGN KEY (event_id) REFERENCES events (id),
-        team_id INT,
-        FOREIGN KEY (team_id) REFERENCES teams (id)
-    );
-    
 
 CREATE TABLE 
     IF NOT EXISTS volunteers (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NULL,
-        FOREIGN KEY (user_id) REFERENCES users (id),
+        FOREIGN KEY (user_id) REFERENCES Users (id),
         plan_id INT,
-        FOREIGN KEY (plan_id) REFERENCES plans (id),
+        FOREIGN KEY (plan_id) REFERENCES Plans (id),
         position_id INT,
         FOREIGN KEY (position_id) REFERENCES positions (id),
         confirmation_status VARCHAR(100) NOT NULL,
@@ -100,7 +96,7 @@ SELECT
         'pending_count', Plans.pending_count,
         'declined_count', Plans.declined_count,
         'date', Plans.date,
-        'teams', (
+        'Teams', (
             SELECT JSON_ARRAYAGG(
                 JSON_OBJECT(
                     'id', Teams.id,

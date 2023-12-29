@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest --coverage",
     "test:unit": "jest --coverage --testPathPattern=src/unit",
-    "test:integration": "jest --coverage --testPathPattern=src/integration",
+    "test:integration": "jest integration.test",
     "start": "tsc && env $(cat .env | grep -v \"#\" | xargs) node dist/src/app.js",
     "dev:start": "tsc && env $(cat .env | grep -v \"#\" | xargs) ts-node-dev --respawn ./src/app.ts",
     "build": "rm -rf dist && tsc",
