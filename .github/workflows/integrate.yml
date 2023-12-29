@@ -1,8 +1,6 @@
 name: deserts-end-api Continuous Integration
 
 on:
-  push:
-    branches: [CI-CD]
   pull_request:
     branches: [master]
 
