@@ -45,6 +45,7 @@ jobs:
         run: npm run lint
 
   unit-tests:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -59,10 +60,14 @@ jobs:
       - name: Install NPM Dependencies
         run: npm install
 
+      - name: Copy sample env file
+        run: cp .sample-env .env
+
       - name: Run unit tests
         run: npm run test:unit
 
   integration-tests:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
