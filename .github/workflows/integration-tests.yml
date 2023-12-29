@@ -3,7 +3,7 @@ name: Integration Tests with MySQL
 on:
   push:
     branches: [main]
-v
+
 jobs:
   login-to-amazon-ecr:
     runs-on: ubuntu-latest
@@ -22,8 +22,8 @@ jobs:
           mask-password: "false"
     outputs:
       registry: ${{ steps.login-ecr.outputs.registry }}
-      docker_username: ${{ steps.login-ecr.outputs['docker_username_' + secrets.AWS_ACCOUNT_ID + '_dkr_ecr_us_east_1_amazonaws_com'] }}
-      docker_password: ${{ steps.login-ecr.outputs['docker_password_' + secrets.AWS_ACCOUNT_ID + '_dkr_ecr_us_east_1_amazonaws_com'] }}
+      docker_username: ${{ steps.login-ecr.outputs}}.docker_username_${{ secrets.AWS_ACCOUNT_ID }}_dkr_ecr_us_east_1_amazonaws_com # More information on these outputs can be found below in the 'Docker Credentials' section
+      docker_password: ${{ steps.login-ecr.outputs}}.docker_password_${{ secrets.AWS_ACCOUNT_ID }}_dkr_ecr_us_east_1_amazonaws_com
   run-with-internal-service:
     name: Run something with an internal image as a service
     needs: login-to-amazon-ecr
