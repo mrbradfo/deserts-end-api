@@ -1,7 +1,7 @@
 import request from "supertest";
 
-import * as env from "../../utilities/environmentVariables";
-import app from "../../app";
+import * as env from "../../src/utilities/environmentVariables";
+import app from "../../src/app";
 
 require("dotenv").config();
 

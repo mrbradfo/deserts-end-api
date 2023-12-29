@@ -1,17 +1,32 @@
 name: action to run when pull request is opened
 
-on: 
-    push:
-    pull_request:
-        types: [opened]
-
+on:
+  pull_request:
+    types: [opened]
 
 jobs:
-    echo:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: echo
-              run: echo "hello mom! I just opened a pull request."
-              
-              
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: echo
+        run: echo "hello mom! I just opened a pull request."
+
+  comment:
+    runs-on: ubuntu-latest
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+    steps:
+      - name: Comment on new PRs
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN }}
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const comment = `Hello @${context.payload.pull_request.user.login}! Thanks for opening this PR. I'll be back soon to review it. :smile:`;
+            github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: comment
+            });

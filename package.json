@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "This project is a REST API for the Deserts End app. It is built with Node.js, Koa, and TypeScript.",
   "main": "index.js",
+  "engines": {
+    "node": "18.18.2"
+  },
   "scripts": {
     "test": "jest --coverage",
+    "test:unit": "jest --coverage --testPathPattern=src/unit",
+    "test:integration": "jest integration.test",
     "start": "tsc && env $(cat .env | grep -v \"#\" | xargs) node dist/src/app.js",
     "dev:start": "tsc && env $(cat .env | grep -v \"#\" | xargs) ts-node-dev --respawn ./src/app.ts",
     "build": "rm -rf dist && tsc",
