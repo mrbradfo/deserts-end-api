@@ -1,5 +1,8 @@
 name: Integration Tests with MySQL
 
+env:
+  aws-region: ${{ secrets.AWS_REGION }}
+
 on:
   push:
     branches: ["*"]
