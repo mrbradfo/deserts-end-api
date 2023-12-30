@@ -4,11 +4,7 @@ import nodemailer from "nodemailer";
 
 const twilioClient = twilio("<your_twilio_account_sid>", "<your_twilio_auth_token>");
 
-export const sendTxtReminder = (
-  volunteerPhoneNumber: string,
-  volunteerName: string,
-  serviceDate: string
-) => {
+export const sendTxtReminder = (volunteerPhoneNumber: string, volunteerName: string, serviceDate: string) => {
   // Send a text message reminder
   const textMessage = `Hello, ${volunteerName}! Just a reminder that you are scheduled to serve on ${serviceDate}. Please be prepared and arrive on time. Thank you!`;
 
@@ -34,11 +30,7 @@ const transporter = nodemailer.createTransport({
     pass: "<your_email_password>",
   },
 });
-export const sendEmailReminder = (
-  volunteerEmail: string,
-  volunteerName: string,
-  serviceDate: string
-) => {
+export const sendEmailReminder = (volunteerEmail: string, volunteerName: string, serviceDate: string) => {
   // Send an email reminder
   const emailMessage = {
     from: "<your_email_address>",

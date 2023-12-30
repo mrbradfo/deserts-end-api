@@ -11,9 +11,7 @@ const getHealth = async (ctx: ParameterizedContext) => {
       heapTotal: `${Math.round((process.memoryUsage().heapTotal / 1024 / 1024) * 100) / 100} MB`,
       heapUsed: `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`,
       external: `${Math.round((process.memoryUsage().external / 1024 / 1024) * 100) / 100} MB`,
-      arrayBuffers: `${
-        Math.round((process.memoryUsage().arrayBuffers / 1024 / 1024) * 100) / 100
-      } MB`,
+      arrayBuffers: `${Math.round((process.memoryUsage().arrayBuffers / 1024 / 1024) * 100) / 100} MB`,
     },
     pid: process.pid,
     uptime: `${Math.round(process.uptime() * 100) / 100} s`,
