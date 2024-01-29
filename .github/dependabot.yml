@@ -1,18 +1,23 @@
-# dependabot configuration file
-
 version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
 
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/db"
     schedule:
-      interval: "daily"
+      interval: "monthly"
